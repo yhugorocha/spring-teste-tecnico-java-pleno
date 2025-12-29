@@ -1,10 +1,7 @@
 package io.git.yhugorocha.coupon.entity;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -14,6 +11,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
+@Builder
 @Table(name = "coupon")
 public class CouponEntity {
 
@@ -36,6 +34,9 @@ public class CouponEntity {
 
     @Column(name= "is_published", nullable = false)
     private Boolean isPublished = false;
+
+    @Column(name = "is_deleted", nullable = false)
+    private Boolean isDeleted = false;
 
     @Column(name = "created_at", nullable = false)
     private LocalDateTime createdAt;
