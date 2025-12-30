@@ -22,6 +22,7 @@ Confira o enunciado completo, [clique aqui](https://www.notion.so/Desafio-t-cnic
 - Maven
 - JUnit 5
 - Mockito
+- Jacoco
 - Swagger/OpenAPI
 - Docker
 - Flyway
