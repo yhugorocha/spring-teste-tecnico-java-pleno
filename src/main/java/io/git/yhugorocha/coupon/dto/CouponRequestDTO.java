@@ -1,18 +1,15 @@
 package io.git.yhugorocha.coupon.dto;
 
 import io.git.yhugorocha.coupon.entity.CouponEntity;
-import io.git.yhugorocha.coupon.util.CodeNormalizerUtil;
 import jakarta.validation.constraints.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 @Getter
 @Setter
+@Builder
 @AllArgsConstructor
 @NoArgsConstructor
 public class CouponRequestDTO {
@@ -23,7 +20,7 @@ public class CouponRequestDTO {
     @NotEmpty(message = "Description cannot be empty")
     private String description;
     @NotNull(message = "Discount value cannot be null")
-    @DecimalMin(value = "0.5", inclusive = true, message = "Discount value must be at least 0.5")
+    @DecimalMin(value = "0.5", message = "Discount value must be at least 0.5")
     @DecimalMax(value = "100.0", message = "Discount value cannot exceed 100")
     private BigDecimal discountValue;
     @NotNull(message = "Expiration date cannot be null")
@@ -33,7 +30,7 @@ public class CouponRequestDTO {
 
     public CouponEntity toEntity() {
         return CouponEntity.builder()
-                .code(CodeNormalizerUtil.normalize(this.code))
+                .code(this.code)
                 .description(this.description)
                 .discountValue(this.discountValue)
                 .expirationDate(this.expirationDate)

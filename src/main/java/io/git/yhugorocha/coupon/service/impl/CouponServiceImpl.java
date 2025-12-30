@@ -2,9 +2,11 @@ package io.git.yhugorocha.coupon.service.impl;
 
 import io.git.yhugorocha.coupon.dto.CouponRequestDTO;
 import io.git.yhugorocha.coupon.dto.CouponResponseDTO;
+import io.git.yhugorocha.coupon.entity.CouponEntity;
 import io.git.yhugorocha.coupon.exception.BusinessException;
 import io.git.yhugorocha.coupon.repository.CouponRepository;
 import io.git.yhugorocha.coupon.service.CouponService;
+import io.git.yhugorocha.coupon.util.CodeNormalizerUtil;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -19,10 +21,13 @@ public class CouponServiceImpl implements CouponService {
     @Override
     public CouponResponseDTO createCoupon(CouponRequestDTO couponRequestDTO) {
         var savedCoupon = couponRequestDTO.toEntity();
+        this.normalizeCode(savedCoupon);
         var existingCoupon = couponRepository.findByCode(savedCoupon.getCode());
+
         if (existingCoupon.isPresent()) {
             throw new BusinessException("Coupon code already exists");
         }
+
         couponRepository.save(savedCoupon);
         return CouponResponseDTO.fromEntity(savedCoupon);
     }
@@ -38,5 +43,9 @@ public class CouponServiceImpl implements CouponService {
 
         coupon.setIsDeleted(true);
         couponRepository.save(coupon);
+    }
+
+    public void normalizeCode(CouponEntity couponEntity) {
+        couponEntity.setCode(CodeNormalizerUtil.normalize(couponEntity.getCode()));
     }
 }
